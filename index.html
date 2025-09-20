@@ -16,6 +16,9 @@
       --success: #00cc66;
       --error: #ff3333;
     }
+/* Add border under section titles */
+
+
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html{
@@ -34,12 +37,12 @@
     .container { width: 90%; max-width: 1200px; margin: auto; }
 
     header {
-      background: var(--light);
-      border-bottom: 2px solid var(--primary);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
+    background: linear-gradient(45deg, black, var(--primary));
+    border-bottom: 2px solid var(--primary);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
     .nav-container {
       display: flex; align-items: center; justify-content: space-between;
       padding: 15px 20px;
@@ -127,9 +130,20 @@
     .btn:hover { background: var(--secondary); }
 
     .section-title {
+      display: block;
       text-align: center; margin: 60px 0 30px;
       font-size: 2rem; font-weight: 700; color: var(--primary);
     }
+    
+.section-title::after {
+  content: '';
+  display: block;
+  width: 60px;         /* largeur dyal line */
+  height: 4px;         /* hauteur dyal line */
+  background: var(--gray);
+  margin: 10px auto 0; /* espace men text */
+  border-radius: 2px;  /* borden radius sghir */
+}
 
     .features {
       display: grid;
@@ -173,9 +187,8 @@
 .download {
   text-align: center;
   padding: 60px 20px; /* zedt padding shwiya */
-  margin: 10px 0; /* espace 10px men l sections li fo9 w li taht */
+  margin: 15px 0; /* espace 10px men l sections li fo9 w li taht */
   background: linear-gradient(135deg, var(--primary), var(--secondary));
-  border-radius: 12px;
   color: #fff; /* text white 3la gradient */
   border-top: 2px solid var(--primary);
   border-bottom: 2px solid var(--primary);
@@ -208,6 +221,9 @@
 }
 
     /* ===== Cards Professional Design ===== */
+    #guide{
+      padding: 10px 0;
+    }
 .card {
   background: var(--light);
   padding: 25px;
