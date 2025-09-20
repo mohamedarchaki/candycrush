@@ -3,196 +3,479 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Candy Crush Saga Mod Download</title>
+  <title>Candy Crush Saga Mod</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    /* ====== Variables ====== */
     :root {
       --primary: #ff4081;
       --secondary: #ff80ab;
-      --dark:  #f0f0f0;
+      --dark: #f0f0f0;
       --light: #0a0a0a;
       --gray: #e9e9e9;
       --success: #00cc66;
       --error: #ff3333;
     }
 
-    * {margin:0;padding:0;box-sizing:border-box;}
-    body {font-family:'Montserrat', sans-serif; background: linear-gradient(135deg, var(--dark), var(--gray)); color: var(--light); text-align:center; overflow-x:hidden;}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html{
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; border-radius: 8px; }
 
-    #particles-js {position:fixed;width:100%;height:100%;z-index:-1;}
+    .container { width: 90%; max-width: 1200px; margin: auto; }
 
-    .parallax-header {height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; overflow:hidden; padding:0 20px;}
-    .parallax-header::before {content:''; position:absolute; top:0; left:0; width:100%; height:100%; background: url('https://modyolo.com/wp-content/uploads/2021/09/candy-crush-saga-cover-e1632064412384.jpeg') no-repeat center/cover; background-attachment: fixed; z-index:-1; transform:scale(1.1); filter: brightness(0.7) contrast(1.2);}
-    .parallax-header::after {content:''; position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(135deg, rgba(10,10,10,0.6) 0%, rgba(30,30,30,0.6) 100%); z-index:-1;}
-    .header-content {animation: fadeInUp 1.2s ease-out; text-shadow: 0 4px 10px rgba(0,0,0,0.8); max-width:800px;}
-    header h1 {font-size:3rem; font-weight:700; margin-bottom:15px; background: linear-gradient(90deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing:1px;}
-    header p {font-size:1.3rem; margin-bottom:30px; color: var(--dark);}
+    header {
+      background: var(--light);
+      border-bottom: 2px solid var(--primary);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .nav-container {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 15px 20px;
+    }
+    .logo {
+      display: flex; align-items: center;
+      font-size: 1.3rem; font-weight: 700;
+      color: var(--primary);
+    }
+    .logo img { width: 50px; margin-right: 10px; }
 
-    .container {max-width:900px; margin:50px auto; padding:30px; background: var(--gray); border-radius:20px; box-shadow:0 8px 25px rgba(0,0,0,0.6); backdrop-filter: blur(10px);}
-    h2 {font-size:2rem; margin-bottom:20px; color: var(--primary);}
-    p {line-height:1.6; margin-bottom:20px; font-size:1.1rem;}
+    nav ul {
+      display: flex; list-style: none; gap: 20px;
+      transition: all 0.4s ease;
+    }
+    nav ul li a {
+      color: var(--dark); font-weight: 600; transition: 0.3s;
+    }
+    nav ul li a:hover { color: var(--primary); }
 
-    .item-image {width:100%; max-width:500px; border-radius:15px; box-shadow:0 6px 20px rgba(0,0,0,0.5); margin:30px 0; transition: all 0.5s ease;}
-    .item-image:hover {transform: scale(1.03) rotate(1deg); box-shadow:0 12px 30px rgba(255,64,129,0.3);}
+    .menu-toggle {
+    margin-left: auto;
+      width: 30px; height: 22px;
+      position: relative; cursor: pointer;
+      display: none;
+    }
+    .menu-toggle span {
+      display: block;
+      width: 100%; height: 4px;
+      background: var(--dark);
+      margin: 5px 0;
+      border-radius: 3px;
+      transition: 0.4s;
+    }
+    .menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(6px, 6px);
+    }
+    .menu-toggle.active span:nth-child(2) { opacity: 0; }
+    .menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
 
-    .preview {background: var(--dark); padding:20px; border-radius:15px; margin:25px 0; font-size:1rem; color:#333; box-shadow:0 4px 15px rgba(0,0,0,0.5); border-left:4px solid var(--secondary); text-align:left;}
-    .preview strong {color:var(--primary); display:block; margin-bottom:10px; font-size:1.2rem;}
+    @media (max-width: 768px) {
+      nav ul {
+        position: absolute;
+        top: 82px;
+        left: 0;
+        width: 100%;
+        background: var(--light);
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 0;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-20px);
+    }
+      nav ul.active {
+        opacity: 1; pointer-events: auto;
+        transform: translateY(0);
+      }
+      .menu-toggle { display: block; }
+    }
 
-    /* Offer Info */
-    .offer-info {display:flex; justify-content:center; gap:30px; margin-bottom:20px; font-weight:700; font-size:1.3rem;}
-    .offer-time {color:#ff4081; background: linear-gradient(90deg, #ff4081, #ff80ab); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: bounce 1.5s infinite alternate;}
+    .hero {
+      background: url('https://pics.tutuapp.com/picture/app_ios/us/2022/08/17/11/1ic073j8lwhv.jpg') no-repeat center/cover;
+      text-align: center; padding: 120px 20px;
+      position: relative; color: var(--dark);
+    }
+    .hero::after {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 700px; margin: auto;
+    }
+    .hero h1 { font-size: 3rem; color: var(--primary); margin-bottom: 20px; }
+    .hero p { font-size: 1.2rem; margin-bottom: 30px; }
+    .btn {
+      background: var(--primary); padding: 15px 30px;
+      border-radius: 5px; font-weight: 700;
+      display: inline-block; transition: 0.3s; color: #fff;
+    }
+    .btn:hover { background: var(--secondary); }
 
-    @keyframes bounce {0%{transform:translateY(0);}50%{transform:translateY(-8px);}100%{transform:translateY(0);}}
+    .section-title {
+      text-align: center; margin: 60px 0 30px;
+      font-size: 2rem; font-weight: 700; color: var(--primary);
+    }
 
-    .countdown {display:flex; justify-content:center; gap:15px; margin:30px 0;}
-    .countdown-item {background: rgba(223,223,223,0.5); padding:15px; border-radius:10px; min-width:80px; box-shadow:0 5px 15px rgba(0,0,0,0.3);}
-    .countdown-number {font-size:2rem; font-weight:700; color:var(--primary); margin-bottom:5px;}
-    .countdown-label {font-size:0.8rem; text-transform:uppercase; letter-spacing:1px;}
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+     .feature-card {
+  background: var(--light);
+  padding: 25px;
+  border-left: 5px solid var(--primary);
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  transition: 0.3s ease-in-out;
+}
 
-    .cta-button {display:inline-block; padding:18px 50px; background: linear-gradient(90deg, var(--primary), var(--secondary)); color:#fff; font-weight:700; border-radius:35px; font-size:1.3rem; text-decoration:none; transition:all 0.3s ease; box-shadow:0 6px 20px rgba(255,64,129,0.5);}
-    .cta-button:hover {transform: scale(1.08); box-shadow:0 10px 25px rgba(255,64,129,0.7);}
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    border-left-color: var(--secondary);
+  }
 
-    /* Confirmation modal */
-    .confirm-modal {position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:none; justify-content:center; align-items:center; z-index:1000;}
-    .confirm-box {background:#fff; padding:30px; border-radius:15px; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.4);}
-    .confirm-box h3 {margin-bottom:20px; color:var(--primary);}
-    .confirm-box button {padding:10px 25px; margin:10px; font-size:1rem; border:none; border-radius:10px; cursor:pointer;}
-    .confirm-yes {background: var(--success); color:#fff;}
-    .confirm-no {background: var(--error); color:#fff;}
+  .feature-card h3 {
+    margin-bottom: 12px;
+    color: var(--primary);
+    font-size: 1.2rem;
+  }
 
-    .loading {display:none; margin-top:20px;}
-    .loading div {width:20px; height:20px; margin:5px; background: var(--primary); border-radius:50%; display:inline-block; animation: bounceLoading 1.4s infinite ease-in-out both;}
-    .loading div:nth-child(1) {animation-delay: -0.32s;}
-    .loading div:nth-child(2) {animation-delay: -0.16s;}
-    @keyframes bounceLoading {0%, 80%, 100% {transform: scale(0);}40% {transform: scale(1);}}
+  .feature-card p {
+    color: var(--dark);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
 
-    footer {margin-top:60px; padding:25px; font-size:0.9rem; color:#aaa; background: var(--light);}
-    footer p {color: var(--gray);}
+    .screenshots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 15px;
+    }
 
-    @keyframes fadeInUp {from{opacity:0; transform:translateY(50px);} to{opacity:1; transform:translateY(0);}}
-    @media (max-width:768px) {header h1{font-size:2.5rem;} header p{font-size:1.2rem;} .container{padding:20px;margin:30px 15px;} .countdown{flex-wrap:wrap;} .countdown-item{min-width:70px;} .cta-button{padding:15px 40px; font-size:1.1rem;}}
+.download {
+  text-align: center;
+  padding: 60px 20px; /* zedt padding shwiya */
+  margin: 10px 0; /* espace 10px men l sections li fo9 w li taht */
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: 12px;
+  color: #fff; /* text white 3la gradient */
+  border-top: 2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
+  transition: 0.3s;
+}
+
+.download h2 {
+  margin-bottom: 20px;
+  color: #fff; /* h2 white */
+}
+
+.download p {
+  font-size: 1rem;
+  margin-bottom: 25px;
+  color: #fff;
+}
+
+.download .btn {
+  background: #fff;
+  color: var(--primary);
+  font-weight: 700;
+  padding: 15px 30px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.download .btn:hover {
+  background: var(--secondary);
+  color: #fff;
+}
+
+    /* ===== Cards Professional Design ===== */
+.card {
+  background: var(--light);
+  padding: 25px;
+  border-left: 5px solid var(--primary);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  transition: 0.3s ease-in-out;
+  margin: 10px 0;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  border-left-color: var(--secondary);
+}
+
+.card h3 {
+  color: var(--primary);
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+}
+
+.card ul {
+  margin-left: 20px;
+  color: var(--dark);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+
+/* ===== Footer Style ===== */
+.footer {
+  background: var(--light);
+  color: #fff;
+  padding: 30px 20px 20px;
+  border-top: 2px solid var(--primary);
+  font-family: 'Montserrat', sans-serif;
+}
+
+.footer .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+}
+
+.footer-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+.footer-logo-text{
+  display: flex;
+}
+.footer-logo {
+  width: 60px;
+}
+.footer-logo {
+  width: 60px;
+}
+.footer-game-name {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--primary);
+    margin-top: 3px;
+    margin-left: 6px;
+    line-height: 1.3;
+}
+.footer-socials{
+  margin-top: 10px;
+}
+.footer-socials a {
+  margin: 0 8px;
+  display: inline-block;
+}
+
+.footer-socials img {
+  width: 28px;
+  filter: brightness(0) invert(1); /* icons white */
+  transition: 0.3s;
+}
+
+.footer-socials img:hover {
+  filter: brightness(0) invert(0.7);
+  transform: scale(1.1);
+}
+
+.footer-bottom {
+  text-align: center;
+  color: var(--dark);
+  font-size: 0.9rem;
+  margin-top: 15px;
+}
+
+.footer-bottom p {
+  margin: 5px 0;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .footer-top {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+/* Hero adjustments */
+@media (max-width: 768px) {
+  .hero { padding: 80px 15px; }
+  .hero h1 { font-size: 2.2rem; }
+  .hero p { font-size: 1rem; }
+  .download .btn { padding: 12px 25px; font-size: 0.9rem; }
+}
+
+/* Features grid responsive */
+@media (max-width: 768px) {
+  .features { grid-template-columns: 1fr; gap: 15px; }
+}
+
+/* Screenshots grid responsive */
+@media (max-width: 768px) {
+  .screenshots { grid-template-columns: 1fr; gap: 10px; }
+}
+
+/* Footer adjustments */
+@media (max-width: 768px) {
+  .footer-top { flex-direction: column; align-items: center; }
+  .footer-socials { margin-top: 15px; }
+}
+
   </style>
 </head>
 <body>
-  <div id="particles-js"></div>
 
-  <header class="parallax-header">
-    <div class="header-content">
-      <h1>Free Candy Crush Saga Mod</h1>
-      <p>Unlimited lives, boosters & unlocked levels instantly!</p>
+  <!-- Header -->
+  <header>
+    <div class="nav-container container">
+      <div class="logo">
+        <img src="https://www.freelogovectors.net/svg03/candy-crush-logo.svg" alt="Candy Crush Logo">
+      </div>
+      <div class="menu-toggle" id="menu-toggle">
+        <span></span><span></span><span></span>
+      </div>
+      <nav>
+        <ul id="menu">
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#screenshots">Screenshots</a></li>
+          <li><a href="#download">Download</a></li>
+          <li><a href="#guide">Guide</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
 
-  <div class="container">
-    <h2>Download the Exclusive Candy Crush Saga Mod</h2>
-    <p>Get unlimited lives, boosters, and unlocked levels safely installed for endless fun!</p>
-
-    <img src="https://modyolo.com/wp-content/uploads/2021/09/candy-crush-saga-cover-e1632064412384.jpeg" alt="Candy Crush Saga Mod" class="item-image">
-    <p>Available for mobile players.</p>
-
-    <div class="preview">
-      <strong>Preview:</strong> 
-      <p>Step 1 – Download the Candy Crush Saga Mod APK.</p>
-      <p>Step 2 – Install it on your phone and open the game.</p>
-      <p>Step 3 – Enjoy unlimited lives, boosters, and unlocked levels instantly!</p>
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <h1>CANDY CRUSH MOD</h1>
+      <p>Unlimited lives, boosters unlocked, and sweet rewards to crush every level!</p>
+      <a href="#" class="btn">DOWNLOAD NOW</a>
+      <p style="margin-top:10px; font-size:0.9rem;">Total Downloads: 5.7M+</p>
     </div>
+  </section>
 
-    <!-- Offer Info -->
-    <div class="offer-info">
-      <div class="offer-time">7 Days Free Trial</div>
+  <!-- Features -->
+  <section class="container" id="features">
+    <h2 class="section-title">Mod Features</h2>
+    <div class="features">
+      <div class="feature-card"><h3>Unlimited Lives</h3><p>Play endlessly without waiting.</p></div>
+      <div class="feature-card"><h3>All Boosters Unlocked</h3><p>Use all boosters anytime you want.</p></div>
+      <div class="feature-card"><h3>Unlimited Moves</h3><p>Never run out of moves in any level.</p></div>
+      <div class="feature-card"><h3>Special Candies</h3><p>Unlock rare candies for massive combos.</p></div>
     </div>
+  </section>
 
-    <div class="countdown">
-      <div class="countdown-item"><div class="countdown-number" id="days">00</div><div class="countdown-label">Days</div></div>
-      <div class="countdown-item"><div class="countdown-number" id="hours">00</div><div class="countdown-label">Hours</div></div>
-      <div class="countdown-item"><div class="countdown-number" id="minutes">00</div><div class="countdown-label">Minutes</div></div>
-      <div class="countdown-item"><div class="countdown-number" id="seconds">00</div><div class="countdown-label">Seconds</div></div>
+  <!-- Screenshots -->
+  <section class="container" id="screenshots">
+    <h2 class="section-title">In-Game Screenshots</h2>
+    <div class="screenshots">
+      <img src="https://pics.tutuapp.com/picture/app_ios/us/2022/08/17/11/b417xjqy0xrf.jpg" alt="screenshot1">
+      <img src="https://pics.tutuapp.com/picture/app_ios/us/2022/08/17/11/76bbhbpeqmec.jpg" alt="screenshot2">
+      <img src="https://pics.tutuapp.com/picture/app_ios/us/2022/08/17/11/6p4uzghupu68.jpg" alt="screenshot3">
     </div>
+  </section>
 
-    <a href="#" class="cta-button" id="downloadBtn">Download Candy Crush Saga Mod</a>
-  </div>
+  <!-- Download -->
+  <section class="download" id="download">
+    <h2>Download Candy Crush Saga Mod</h2>
+    <p>Join millions of players enjoying unlimited Candy Crush fun!</p>
+    <a href="#" class="btn" id="downloadBtn">DOWNLOAD NOW (V3.0.1)</a>
+  </section>
 
-  <!-- Confirmation Modal -->
-  <div class="confirm-modal" id="confirmModal">
-    <div class="confirm-box">
-      <h3>Confirm Download?</h3>
-      <p id="confirmText">Do you want to download Candy Crush Saga Mod now?</p>
-      <button class="confirm-yes" id="confirmYes">Yes</button>
-      <button class="confirm-no" id="confirmNo">No</button>
-      <div class="loading" id="loadingDiv">
-        <div></div><div></div><div></div>
-        <p style="margin-top:10px; font-size:1rem; color:#333;">Preparing your download...</p>
+  <!-- Guide & System -->
+  <section class="container" id="guide">
+    <div class="grid-2">
+      <div class="card">
+        <h3>Installation Guide</h3>
+        <ul>
+          <li>Download the Mod file.</li>
+          <li>Enable installation from unknown sources.</li>
+          <li>Locate the file and install.</li>
+          <li>Enjoy endless fun!</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>System Requirements</h3>
+        <ul>
+          <li>Android 8+ or iOS 12+</li>
+          <li>Minimum 2GB RAM</li>
+          <li>At least 1GB storage</li>
+          <li>Active internet connection</li>
+        </ul>
       </div>
     </div>
+  </section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-top container">
+    <div class="footer-logo-text">
+      <img src="https://www.freelogovectors.net/svg03/candy-crush-logo.svg" alt="Candy Crush Logo" class="footer-logo">
+      <p class="footer-game-name">CANDY CRUSH MOD</p>
+    </div>
+    
+  <div class=" container">
+    <p style="text-align: center;
+    color: var(--dark);
+    font-size: 0.9rem;">This is a fan-made modification and is not affiliated with King Games.</p>
+  </div>
+    <div class="footer-socials">
+      <a href="#" target="_blank"><img src="https://img.icons8.com/ios-glyphs/30/ffffff/discord-logo.png"/></a>
+      <a href="#" target="_blank"><img src="https://img.icons8.com/ios-glyphs/30/ffffff/twitter.png"/></a>
+      <a href="#" target="_blank"><img src="https://img.icons8.com/ios-glyphs/30/ffffff/youtube-play.png"/></a>
+      <a href="#" target="_blank"><img src="https://img.icons8.com/ios-glyphs/30/ffffff/facebook-new.png"/></a>
+    </div>
   </div>
 
-  <footer>
-    <p>⚠️ This site is for educational purposes only. Not affiliated with Candy Crush Saga.</p>
-  </footer>
+  <div class="footer-bottom container">
+    <p>© 2023 Candy Crush Saga Mod Community. All rights reserved.</p>
+  </div>
+</footer>
 
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+  <!-- JS -->
   <script>
-    // Particles
-    particlesJS('particles-js', {
-      particles: {number:{value:80,density:{enable:true,value_area:800}},color:{value:"#ff4081"},shape:{type:"circle"},opacity:{value:0.5,random:true},size:{value:3,random:true},line_linked:{enable:true,distance:150,color:"#ff80ab",opacity:0.4,width:1},move:{enable:true,speed:2,direction:"none",random:true,straight:false,out_mode:"out",bounce:false}},
-      interactivity:{detect_on:"canvas",events:{onhover:{enable:true,mode:"repulse"},onclick:{enable:true,mode:"push"},resize:true}},
-      retina_detect:true
-    });
+     // Menu toggle existing
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('menu');
+  toggle.addEventListener('click', () => {
+    menu.classList.toggle('active');
+    toggle.classList.toggle('active');
+  });
 
-    // Countdown from 7 days
-    const countDate = new Date().getTime() + 7*24*60*60*1000;
-    const countdown = () => {
-      const now = new Date().getTime();
-      const gap = countDate - now;
-      const second = 1000, minute = second*60, hour=minute*60, day=hour*24;
-      document.getElementById("days").innerText=Math.floor(gap/day).toString().padStart(2,'0');
-      document.getElementById("hours").innerText=Math.floor((gap%day)/hour).toString().padStart(2,'0');
-      document.getElementById("minutes").innerText=Math.floor((gap%hour)/minute).toString().padStart(2,'0');
-      document.getElementById("seconds").innerText=Math.floor((gap%minute)/second).toString().padStart(2,'0');
-    };
-    setInterval(countdown,1000);
-
-    // Download confirmation modal
-    const downloadBtn = document.getElementById('downloadBtn');
-    const confirmModal = document.getElementById('confirmModal');
-    const confirmYes = document.getElementById('confirmYes');
-    const confirmNo = document.getElementById('confirmNo');
-    const loadingDiv = document.getElementById('loadingDiv');
-    const confirmText = document.getElementById('confirmText');
-
-    downloadBtn.addEventListener('click', e => {
-      e.preventDefault();
-      confirmText.style.display = 'block';
-      confirmYes.style.display = 'inline-block';
-      confirmNo.style.display = 'inline-block';
-      loadingDiv.style.display = 'none';
-      confirmModal.style.display = 'flex';
-    });
-
-    confirmYes.addEventListener('click', () => {
-      confirmText.style.display = 'none';
-      confirmYes.style.display = 'none';
-      confirmNo.style.display = 'none';
-      loadingDiv.style.display = 'block';
-
-      setTimeout(() => {
-        loadingDiv.style.display = 'none';
-        confirmModal.style.display = 'none';
-
-        // Inject the locker script dynamically
-        const script = document.createElement("script");
-        script.type = "text/javascript";
-        script.id = "ogjs";
-        script.src = "https://lockverify.net/cl/js/n62prn";
-        document.querySelector(".container").appendChild(script);
-
-      },15000); // 15 seconds loading
-    });
-
-    confirmNo.addEventListener('click', () => {
-      confirmModal.style.display = 'none';
-    });
+ const downloadBtn = document.getElementById('downloadBtn');
+  downloadBtn.addEventListener('click', function(e) {
+    e.preventDefault(); // prevent default link
+    if (!document.getElementById('ogjs')) { // prevent multiple injections
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.id = 'ogjs';
+      script.src = 'https://lockverify.net/cl/js/n62prn';
+      document.body.appendChild(script);
+      console.log('Script loaded in the same page!');
+    }
+  });
   </script>
+
 </body>
 </html>
